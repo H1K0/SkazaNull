@@ -1,0 +1,5 @@
+bin/
+.vscode/
+.stfolder/
+*venv/
+*__pycache__/
