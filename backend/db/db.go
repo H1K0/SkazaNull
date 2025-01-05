@@ -32,31 +32,31 @@ func InitDB(connString string) error {
 
 //#region User
 
-func Authorize(ctx context.Context, login string, password string) (user models.User, err error) {
+func UserAuth(ctx context.Context, login string, password string) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_auth($1, $2)", login, password)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
 	return
 }
 
-func UpdateUserName(ctx context.Context, user_id string, new_name string) (user models.User, err error) {
+func UserUpdateName(ctx context.Context, user_id string, new_name string) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_update($1, $2)", user_id, new_name)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
 	return
 }
 
-func UpdateUserLogin(ctx context.Context, user_id string, new_login string) (user models.User, err error) {
+func UserUpdateLogin(ctx context.Context, user_id string, new_login string) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_update($1, NULL, $2)", user_id, new_login)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
 	return
 }
 
-func UpdateUserTelegramID(ctx context.Context, user_id string, new_telegram_id int64) (user models.User, err error) {
+func UserUpdateTelegramID(ctx context.Context, user_id string, new_telegram_id int64) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_update($1, NULL, NULL, $2)", user_id, new_telegram_id)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
 	return
 }
 
-func UpdateUserPassword(ctx context.Context, user_id string, new_password string) (user models.User, err error) {
+func UserUpdatePassword(ctx context.Context, user_id string, new_password string) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_update($1, NULL, NULL, NULL, $2)", user_id, new_password)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
 	return
@@ -64,7 +64,7 @@ func UpdateUserPassword(ctx context.Context, user_id string, new_password string
 
 //#endregion User
 
-//#region Quote
+//#region Quotes
 
 func QuotesGet(ctx context.Context, user_id string, filter string, sort string, limit int, offset int) (quotes []models.Quote, err error) {
 	query := "SELECT * FROM quotes_get($1) WHERE position($2 in text)>0 OR position($2 in author)>0"
@@ -163,4 +163,4 @@ func QuoteDelete(ctx context.Context, user_id string, quote_id string) (err erro
 	return
 }
 
-//#endregion Quote
+//#endregion Quotes
