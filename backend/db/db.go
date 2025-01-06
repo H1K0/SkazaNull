@@ -38,6 +38,12 @@ func UserAuth(ctx context.Context, login string, password string) (user models.U
 	return
 }
 
+func UserGet(ctx context.Context, user_id string) (user models.User, err error) {
+	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_get($1)", user_id)
+	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
+	return
+}
+
 func UserUpdateName(ctx context.Context, user_id string, new_name string) (user models.User, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM user_update($1, $2)", user_id, new_name)
 	err = row.Scan(&user.ID, &user.Name, &user.Login, &user.Role, &user.TelegramID)
