@@ -21,14 +21,14 @@ func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	{
 		api.POST("/auth", userAuth)
-		api.GET("/auth", userGet)
-		api.PATCH("/auth", userUpdate)
+		api.GET("/auth", MiddlewareAuth, userGet)
+		api.PATCH("/auth", MiddlewareAuth, userUpdate)
 		api.DELETE("/auth", userLogout)
 
-		api.GET("/quotes", quotesGet)
-		api.POST("/quotes", quoteAdd)
-		api.GET("/quotes/:id", quoteGet)
-		api.PATCH("/quotes/:id", quoteUpdate)
-		api.DELETE("/quotes/:id", quoteDelete)
+		api.GET("/quotes", MiddlewareAuth, quotesGet)
+		api.POST("/quotes", MiddlewareAuth, quoteAdd)
+		api.GET("/quotes/:id", MiddlewareAuth, quoteGet)
+		api.PATCH("/quotes/:id", MiddlewareAuth, quoteUpdate)
+		api.DELETE("/quotes/:id", MiddlewareAuth, quoteDelete)
 	}
 }

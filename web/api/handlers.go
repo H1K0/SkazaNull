@@ -38,12 +38,7 @@ func userAuth(c *gin.Context) {
 }
 
 func userGet(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	user, err := db.UserGet(context.Background(), user_id)
 	if err != nil {
 		status, message := HandleDBError(err)
@@ -54,12 +49,7 @@ func userGet(c *gin.Context) {
 }
 
 func userUpdate(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	var body map[string]string
 	err := c.BindJSON(&body)
 	if err != nil {
@@ -130,12 +120,7 @@ func userLogout(c *gin.Context) {
 //#region Quotes
 
 func quotesGet(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	filter, ok := c.GetQuery("filter")
 	if !ok {
 		filter = ""
@@ -178,12 +163,7 @@ func quotesGet(c *gin.Context) {
 }
 
 func quoteGet(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	quote_id := c.Param("id")
 	quote, err := db.QuoteGet(context.Background(), user_id, quote_id)
 	if err != nil {
@@ -195,12 +175,7 @@ func quoteGet(c *gin.Context) {
 }
 
 func quoteAdd(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	var body map[string]string
 	err := c.BindJSON(&body)
 	if err != nil {
@@ -238,12 +213,7 @@ func quoteAdd(c *gin.Context) {
 }
 
 func quoteUpdate(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	quote_id := c.Param("id")
 	var body map[string]string
 	err := c.BindJSON(&body)
@@ -289,12 +259,7 @@ func quoteUpdate(c *gin.Context) {
 }
 
 func quoteDelete(c *gin.Context) {
-	session := sessions.Default(c)
-	user_id, ok := session.Get("user_id").(string)
-	if !ok {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
-		return
-	}
+	user_id := c.GetString("user_id")
 	quote_id := c.Param("id")
 	err := db.QuoteDelete(context.Background(), user_id, quote_id)
 	if err != nil {
