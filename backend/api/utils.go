@@ -17,6 +17,6 @@ func HandleDBError(err error) (int, string) {
 	if err == nil {
 		return int(status), message
 	} else {
-		return 500, message
+		return 400, pgErr.Message
 	}
 }
