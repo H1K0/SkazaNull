@@ -37,6 +37,65 @@ func userAuth(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+func userUpdate(c *gin.Context) {
+	session := sessions.Default(c)
+	user_id, ok := session.Get("user_id").(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
+		return
+	}
+	var body map[string]string
+	err := c.BindJSON(&body)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "И чё за шнягу ты мне кинул?"})
+		return
+	}
+	var user models.User
+	ctx := context.Background()
+	newTelegramIDStr, ok := body["telegram_id"]
+	if ok && newTelegramIDStr != "" {
+		newTelegramID, err := strconv.ParseInt(newTelegramIDStr, 10, 0)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "telegram_id param must be int"})
+			return
+		}
+		user, err = db.UserUpdateTelegramID(ctx, user_id, newTelegramID)
+		if err != nil {
+			status, message := HandleDBError(err)
+			c.JSON(status, gin.H{"error": message})
+			return
+		}
+	}
+	newName, ok := body["name"]
+	if ok && newName != "" {
+		user, err = db.UserUpdateName(ctx, user_id, newName)
+		if err != nil {
+			status, message := HandleDBError(err)
+			c.JSON(status, gin.H{"error": message})
+			return
+		}
+	}
+	newLogin, ok := body["login"]
+	if ok && newLogin != "" {
+		user, err = db.UserUpdateLogin(ctx, user_id, newLogin)
+		if err != nil {
+			status, message := HandleDBError(err)
+			c.JSON(status, gin.H{"error": message})
+			return
+		}
+	}
+	newPassword, ok := body["password"]
+	if ok && newPassword != "" {
+		user, err = db.UserUpdatePassword(ctx, user_id, newPassword)
+		if err != nil {
+			status, message := HandleDBError(err)
+			c.JSON(status, gin.H{"error": message})
+			return
+		}
+	}
+	c.JSON(http.StatusOK, user)
+}
+
 //#endregion User
 
 //#region Quotes
