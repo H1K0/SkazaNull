@@ -88,4 +88,21 @@ func quotesGet(c *gin.Context) {
 	c.JSON(http.StatusOK, quotes)
 }
 
+func quoteGet(c *gin.Context) {
+	session := sessions.Default(c)
+	user_id, ok := session.Get("user_id").(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
+		return
+	}
+	quote_id := c.Param("id")
+	quote, err := db.QuoteGet(context.Background(), user_id, quote_id)
+	if err != nil {
+		status, message := HandleDBError(err)
+		c.JSON(status, gin.H{"error": message})
+		return
+	}
+	c.JSON(http.StatusOK, quote)
+}
+
 //#endregion Quotes

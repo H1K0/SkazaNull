@@ -22,5 +22,6 @@ func RegisterRoutes(r *gin.Engine) {
 	{
 		api.POST("/auth", userAuth)
 		api.GET("/quotes", quotesGet)
+		api.GET("/quotes/:id", quoteGet)
 	}
 }
