@@ -7,7 +7,6 @@ import (
 	"time"
 
 	"github.com/H1K0/SkazaNull/models"
-	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -27,14 +26,6 @@ func InitDB(connString string) error {
 	ConnPool, err = pgxpool.NewWithConfig(context.Background(), poolConfig)
 	if err != nil {
 		return fmt.Errorf("error while initializing DB connections pool: %w", err)
-	}
-	return nil
-}
-
-func CastToPgError(err error) *pgconn.PgError {
-	pqErr, ok := err.(*pgconn.PgError)
-	if ok {
-		return pqErr
 	}
 	return nil
 }

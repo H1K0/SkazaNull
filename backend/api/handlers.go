@@ -25,19 +25,8 @@ func userAuth(c *gin.Context) {
 	}
 	user, err := db.UserAuth(context.Background(), credentials.Login, credentials.Password)
 	if err != nil {
-		pqErr := db.CastToPgError(err)
-		if pqErr == nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		statusStr := pqErr.Message[:3]
-		msg := pqErr.Message[4:]
-		status, _err := strconv.ParseInt(statusStr, 10, 0)
-		if _err == nil {
-			c.JSON(int(status), gin.H{"error": msg})
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
+		status, message := HandlePgError(err)
+		c.JSON(status, gin.H{"error": message})
 		return
 	}
 	session := sessions.Default(c)
@@ -92,19 +81,8 @@ func quotesGet(c *gin.Context) {
 	}
 	quotes, err := db.QuotesGet(c, user_id, filter, sort, int(limit), int(offset))
 	if err != nil {
-		pqErr := db.CastToPgError(err)
-		if pqErr == nil {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-			return
-		}
-		statusStr := pqErr.Message[:3]
-		msg := pqErr.Message[4:]
-		status, _err := strconv.ParseInt(statusStr, 10, 0)
-		if _err == nil {
-			c.JSON(int(status), gin.H{"error": msg})
-		} else {
-			c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
-		}
+		status, message := HandlePgError(err)
+		c.JSON(status, gin.H{"error": message})
 		return
 	}
 	c.JSON(http.StatusOK, quotes)
