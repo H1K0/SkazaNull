@@ -26,6 +26,7 @@ func RegisterRoutes(r *gin.Engine) {
 		api.DELETE("/auth", userLogout)
 
 		api.GET("/quotes", MiddlewareAuth, quotesGet)
+		api.GET("/quotes/count", MiddlewareAuth, quotesCount)
 		api.POST("/quotes", MiddlewareAuth, quoteAdd)
 		api.GET("/quotes/:id", MiddlewareAuth, quoteGet)
 		api.PATCH("/quotes/:id", MiddlewareAuth, quoteUpdate)

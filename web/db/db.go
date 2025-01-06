@@ -134,6 +134,12 @@ func QuotesGet(ctx context.Context, user_id string, filter string, sort string, 
 	return
 }
 
+func QuotesCount(ctx context.Context, user_id string) (count int, err error) {
+	row := ConnPool.QueryRow(ctx, "SELECT count(*) FROM quotes_get($1)", user_id)
+	err = row.Scan(&count)
+	return
+}
+
 func QuoteGet(ctx context.Context, user_id string, quote_id string) (quote models.Quote, err error) {
 	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_get($1, $2)", user_id, quote_id)
 	err = row.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
