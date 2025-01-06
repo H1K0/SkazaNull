@@ -20,7 +20,7 @@ func userAuth(c *gin.Context) {
 	}
 	err := c.ShouldBind(&credentials)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "И че за шнягу ты мне кинул?"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "И чё за шнягу ты мне кинул?"})
 		return
 	}
 	user, err := db.UserAuth(context.Background(), credentials.Login, credentials.Password)
