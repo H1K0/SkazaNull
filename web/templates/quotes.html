@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{{ template "head" . }}
+	<title>Цитаты | SkazaNull</title>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+	<div class="max-w-4xl w-full space-y-8 bg-white p-10 rounded-lg shadow-lg">
+		<div class="text-center">
+			<i class="fas fa-quote-left text-4xl text-custom mb-4"></i>
+			<h2 class="mt-6 text-3xl font-bold font-[&#39;Playfair_Display&#39;] text-gray-900">Пацанские цитаты</h2>
+			<p class="mt-2 text-sm text-gray-600 font-[&#39;Inter&#39;]">Читайте и угорайте :)</p>
+		</div>
+		<div id="error" class="hidden mt-4 p-4 rounded-md bg-red-50 border border-red-200">
+			<p id="error-message" class="text-sm text-red-600 font-[&#39;Inter&#39;]"></p>
+		</div>
+		<div class="mb-6 flex justify-between items-center">
+			<div class="flex gap-4">
+				<input type="text" id="input-search" placeholder="Поиск цитат..." class="px-4 py-2 border rounded-lg" />
+				<select id="input-sorting" class="px-4 py-2 border rounded-lg" style="padding-right: 3.5rem;">
+					<option value="-datetime">По дате ↑</option>
+					<option value="+datetime">По дате ↓</option>
+					<option value="+author">По автору А-Я</option>
+					<option value="-author">По автору Я-А</option>
+					<option value="+text">По тексту А-Я</option>
+					<option value="-text">По тексту Я-А</option>
+					<option value="+creator.name">По цитатору А-Я</option>
+					<option value="-creator.name">По цитатору Я-А</option>
+					<option value="random">Рандом Рандомыч</option>
+				</select>
+				<button class="text-gray-600 hover:text-blue-500" id="btn-refresh">
+					<i class="fas fa-refresh"></i>
+				</button>
+			</div>
+			<button class="bg-custom text-white px-4 py-2 rounded-lg hover:bg-custom/90" id="btn-add-open">Добавить цитату</button>
+		</div>
+		<div id="block-quotes" class="space-y-4">
+			<img id="block-quotes-loader" src="/static/images/loader.gif" alt="Loading..." class="loader">
+		</div>
+		<div class="mt-6 flex justify-center gap-2">
+			<button id="btn-page-first" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">1</button>
+			<div id="pages-prev" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">...</div>
+			<button id="btn-page-prev" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">1</button>
+			<button id="btn-page-curr" class="px-3 py-1 border rounded-lg bg-custom text-white">2</button>
+			<button id="btn-page-next" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">3</button>
+			<div id="pages-next" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">...</div>
+			<button id="btn-page-last" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">10</button>
+		</div>
+		<div class="text-center mt-8">
+			<p class="text-xs text-gray-500 font-[&#39;Inter&#39;]">
+				<i class="fas fa-quote-right text-custom mr-1"></i>
+				&copy; Masahiko AMANO (H1K0), 2025—present
+				<i class="fas fa-quote-left text-custom ml-1"></i>
+			</p>
+		</div>
+	</div>
+	<script src="/static/js/quotes.js"></script>
+</body>
+
+</html>
