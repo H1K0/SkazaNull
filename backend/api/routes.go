@@ -24,6 +24,7 @@ func RegisterRoutes(r *gin.Engine) {
 		api.GET("/quotes", quotesGet)
 		api.POST("/quotes", quoteAdd)
 		api.GET("/quotes/:id", quoteGet)
+		api.PATCH("/quotes/:id", quoteUpdate)
 		api.DELETE("/quotes/:id", quoteDelete)
 	}
 }
