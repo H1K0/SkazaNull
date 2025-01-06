@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	{{ template "head" . }}
+	<title>Авторизация | SkazaNull</title>
+</head>
+
+<body class="min-h-screen bg-gray-50 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+	<div class="max-w-xl w-full space-y-8 bg-white p-10 rounded-lg shadow-lg">
+		<div class="text-center">
+			<i class="fas fa-quote-left text-4xl text-custom mb-4"></i>
+			<h2 class="mt-6 text-3xl font-bold font-[&#39;Playfair_Display&#39;] text-gray-900">Категорически приветствую!</h2>
+			<p class="mt-2 text-sm text-gray-600 font-[&#39;Inter&#39;]">&#34;Пацанский веб-сервис для пацанских цитат&#34;</p>
+		</div>
+		<div id="error" class="hidden mt-4 p-4 rounded-md bg-red-50 border border-red-200 animate-fade-in"
+			 style="position: relative; transition: all 0.3s ease-in-out;">
+			<p class="text-sm text-red-600 font-[&#39;Inter&#39;]">
+			<div class="flex items-center">
+				<i class="fas fa-exclamation-circle text-red-500 mr-2"></i>
+				<span class="text-sm text-red-600 font-[&#34;Inter&#34;]" id="error-message">
+					Упс, чёто пошло не так...
+				</span>
+			</div>
+			</p>
+			<button class="absolute top-2 right-2 text-red-400 hover:text-red-600" onclick="this.parentElement.style.display='none'">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+		<form class="mt-8 space-y-6" id="auth" action="/api/auth" method="POST">
+			<div class="space-y-5">
+				<div>
+					<label for="login" class="block text-sm font-medium text-gray-700 font-[&#39;Inter&#39;]">
+						Электронная почта
+					</label>
+					<div class="mt-1 relative">
+						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<i class="fas fa-envelope text-gray-400"></i>
+						</div>
+						<input id="login" name="login" type="login" required placeholder="Логин"
+							   class="!rounded-button appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom focus:border-custom sm:text-sm font-[&#39;Inter&#39;]" />
+					</div>
+				</div>
+				<div>
+					<label for="password" class="block text-sm font-medium text-gray-700 font-[&#39;Inter&#39;]">
+						Пароль
+					</label>
+					<div class="mt-1 relative">
+						<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+							<i class="fas fa-lock text-gray-400"></i>
+						</div>
+						<input id="password" name="password" type="password" required placeholder="Пароль"
+							   class="!rounded-button appearance-none block w-full pl-10 pr-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom focus:border-custom sm:text-sm font-[&#39;Inter&#39;]" />
+					</div>
+				</div>
+			</div>
+			<div>
+				<button type="submit"
+						class="!rounded-button group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium text-white bg-custom hover:bg-custom/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom font-[&#39;Inter&#39;]">
+					Войти
+				</button>
+			</div>
+		</form>
+		<div class="text-center">
+			<p class="text-xs text-gray-500 font-[&#39;Inter&#39;]">
+				<i class="fas fa-quote-right text-custom mr-1"></i>
+				&copy; Masahiko AMANO (H1K0), 2025—present
+				<i class="fas fa-quote-left text-custom ml-1"></i>
+			</p>
+		</div>
+	</div>
+	<script src="/static/js/auth.js"></script>
+</body>
+
+</html>
