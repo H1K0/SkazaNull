@@ -148,4 +148,21 @@ func quoteAdd(c *gin.Context) {
 	c.JSON(http.StatusCreated, quote)
 }
 
+func quoteDelete(c *gin.Context) {
+	session := sessions.Default(c)
+	user_id, ok := session.Get("user_id").(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
+		return
+	}
+	quote_id := c.Param("id")
+	err := db.QuoteDelete(context.Background(), user_id, quote_id)
+	if err != nil {
+		status, message := HandleDBError(err)
+		c.JSON(status, gin.H{"error": message})
+		return
+	}
+	c.JSON(http.StatusNoContent, nil)
+}
+
 //#endregion Quotes
