@@ -25,7 +25,7 @@ func userAuth(c *gin.Context) {
 	}
 	user, err := db.UserAuth(context.Background(), credentials.Login, credentials.Password)
 	if err != nil {
-		status, message := HandlePgError(err)
+		status, message := HandleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -81,7 +81,7 @@ func quotesGet(c *gin.Context) {
 	}
 	quotes, err := db.QuotesGet(c, user_id, filter, sort, int(limit), int(offset))
 	if err != nil {
-		status, message := HandlePgError(err)
+		status, message := HandleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
