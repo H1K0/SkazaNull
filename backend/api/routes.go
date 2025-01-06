@@ -23,6 +23,7 @@ func RegisterRoutes(r *gin.Engine) {
 		api.POST("/auth", userAuth)
 		api.GET("/auth", userGet)
 		api.PATCH("/auth", userUpdate)
+		api.DELETE("/auth", userLogout)
 
 		api.GET("/quotes", quotesGet)
 		api.POST("/quotes", quoteAdd)

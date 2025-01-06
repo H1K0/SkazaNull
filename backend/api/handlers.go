@@ -112,6 +112,19 @@ func userUpdate(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+func userLogout(c *gin.Context) {
+	session := sessions.Default(c)
+	_, ok := session.Get("user_id").(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ну и как я тебя разлогиню, если ты даже не залогинился?"})
+		return
+	}
+	session.Clear()
+	session.Options(sessions.Options{MaxAge: -1})
+	session.Save()
+	c.Status(http.StatusNoContent)
+}
+
 //#endregion User
 
 //#region Quotes
