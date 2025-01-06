@@ -37,6 +37,22 @@ func userAuth(c *gin.Context) {
 	c.JSON(http.StatusOK, user)
 }
 
+func userGet(c *gin.Context) {
+	session := sessions.Default(c)
+	user_id, ok := session.Get("user_id").(string)
+	if !ok {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
+		return
+	}
+	user, err := db.UserGet(context.Background(), user_id)
+	if err != nil {
+		status, message := HandleDBError(err)
+		c.JSON(status, gin.H{"error": message})
+		return
+	}
+	c.JSON(http.StatusOK, user)
+}
+
 func userUpdate(c *gin.Context) {
 	session := sessions.Default(c)
 	user_id, ok := session.Get("user_id").(string)

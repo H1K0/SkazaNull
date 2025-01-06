@@ -21,6 +21,7 @@ func RegisterRoutes(r *gin.Engine) {
 	api := r.Group("/api")
 	{
 		api.POST("/auth", userAuth)
+		api.GET("/auth", userGet)
 		api.PATCH("/auth", userUpdate)
 
 		api.GET("/quotes", quotesGet)
