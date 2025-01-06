@@ -141,19 +141,19 @@ func QuoteAdd(ctx context.Context, user_id string, text string, author string, d
 }
 
 func QuoteUpdateText(ctx context.Context, user_id string, quote_id string, new_text string) (quote models.Quote, err error) {
-	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_get($1, $2, $3)", user_id, quote_id, new_text)
+	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_update($1, $2, $3)", user_id, quote_id, new_text)
 	err = row.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
 	return
 }
 
 func QuoteUpdateAuthor(ctx context.Context, user_id string, quote_id string, new_author string) (quote models.Quote, err error) {
-	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_get($1, $2, NULL, $3)", user_id, quote_id, new_author)
+	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_update($1, $2, NULL, $3)", user_id, quote_id, new_author)
 	err = row.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
 	return
 }
 
 func QuoteUpdateDatetime(ctx context.Context, user_id string, quote_id string, new_datetime time.Time) (quote models.Quote, err error) {
-	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_get($1, $2, NULL, NULL, $3)", user_id, quote_id, new_datetime)
+	row := ConnPool.QueryRow(ctx, "SELECT * FROM quote_update($1, $2, NULL, NULL, $3)", user_id, quote_id, new_datetime)
 	err = row.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
 	return
 }
