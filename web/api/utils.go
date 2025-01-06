@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-func HandleDBError(err error) (int, string) {
+func handleDBError(err error) (int, string) {
 	pgErr, ok := err.(*pgconn.PgError)
 	if !ok {
 		return 500, err.Error()

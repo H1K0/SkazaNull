@@ -26,7 +26,7 @@ func userAuth(c *gin.Context) {
 	}
 	user, err := db.UserAuth(context.Background(), credentials.Login, credentials.Password)
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -41,7 +41,7 @@ func userGet(c *gin.Context) {
 	user_id := c.GetString("user_id")
 	user, err := db.UserGet(context.Background(), user_id)
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -67,7 +67,7 @@ func userUpdate(c *gin.Context) {
 		}
 		user, err = db.UserUpdateTelegramID(ctx, user_id, newTelegramID)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -76,7 +76,7 @@ func userUpdate(c *gin.Context) {
 	if ok && newName != "" {
 		user, err = db.UserUpdateName(ctx, user_id, newName)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -85,7 +85,7 @@ func userUpdate(c *gin.Context) {
 	if ok && newLogin != "" {
 		user, err = db.UserUpdateLogin(ctx, user_id, newLogin)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -94,7 +94,7 @@ func userUpdate(c *gin.Context) {
 	if ok && newPassword != "" {
 		user, err = db.UserUpdatePassword(ctx, user_id, newPassword)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -155,7 +155,7 @@ func quotesGet(c *gin.Context) {
 	}
 	quotes, err := db.QuotesGet(c, user_id, filter, sort, int(limit), int(offset))
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -167,7 +167,7 @@ func quoteGet(c *gin.Context) {
 	quote_id := c.Param("id")
 	quote, err := db.QuoteGet(context.Background(), user_id, quote_id)
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -205,7 +205,7 @@ func quoteAdd(c *gin.Context) {
 	}
 	quote, err := db.QuoteAdd(context.Background(), user_id, text, author, datetime)
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
@@ -227,7 +227,7 @@ func quoteUpdate(c *gin.Context) {
 	if ok && newText != "" {
 		quote, err = db.QuoteUpdateText(ctx, user_id, quote_id, newText)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -236,7 +236,7 @@ func quoteUpdate(c *gin.Context) {
 	if ok && newAuthor != "" {
 		quote, err = db.QuoteUpdateAuthor(ctx, user_id, quote_id, newAuthor)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -250,7 +250,7 @@ func quoteUpdate(c *gin.Context) {
 		}
 		quote, err = db.QuoteUpdateDatetime(context.Background(), user_id, quote_id, newDatetime)
 		if err != nil {
-			status, message := HandleDBError(err)
+			status, message := handleDBError(err)
 			c.JSON(status, gin.H{"error": message})
 			return
 		}
@@ -263,7 +263,7 @@ func quoteDelete(c *gin.Context) {
 	quote_id := c.Param("id")
 	err := db.QuoteDelete(context.Background(), user_id, quote_id)
 	if err != nil {
-		status, message := HandleDBError(err)
+		status, message := handleDBError(err)
 		c.JSON(status, gin.H{"error": message})
 		return
 	}
