@@ -13,42 +13,6 @@ if (sorting == null) {
 	sorting = "-datetime";
 }
 
-function datetimeToLocalISO(datetime) {
-	var options = {
-		year: "numeric",
-		month: "2-digit",
-		day: "2-digit",
-		hour: "2-digit",
-		minute: "2-digit",
-		second: "2-digit",
-		timeZoneName: "longOffset",
-	};
-
-	var formatter = new Intl.DateTimeFormat("sv-SE", options);
-	var date = new Date(datetime);
-
-	return formatter
-		.formatToParts(date)
-		.map(({ type, value }) => {
-			if (type === "timeZoneName") {
-				return value.slice(3);
-			} else {
-				return value;
-			}
-		})
-		.join("")
-		.replace(" ", "T")
-		.replace(" ", "");
-}
-
-function escapedString(str) {
-	return str
-		.replace("&", "&amp;")
-		.replace("<", "&lt;")
-		.replace(">", "&gt;")
-		.replace("\n", "<br>");
-}
-
 function renderBlockQuote(quote) {
 	return `
 	<div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
@@ -168,11 +132,7 @@ $(document).on("click", "#btn-add-close", function (e) {
 
 $(document).on("submit", "#quote-create", function (e) {
 	e.preventDefault();
-	formdata = $("#quote-create").serializeArray();
-	data = {};
-	$(formdata).each(function (index, obj) {
-		data[obj.name] = obj.value;
-	});
+	data = formToJSON($("#quote-create"));
 	data.datetime = datetimeToLocalISO(data.datetime);
 	$.ajax({
 		url: "/api/quotes",

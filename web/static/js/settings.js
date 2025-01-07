@@ -31,12 +31,7 @@ $(document).on("click", "#btn-logout", function (e) {
 
 $(document).on("submit", "#user-update", function (e) {
 	e.preventDefault();
-	formdata = $("#user-update").serializeArray();
-	data = {};
-	$(formdata).each(function (index, obj) {
-		data[obj.name] = obj.value;
-	});
-	console.log(data);
+	data = formToJSON($("#user-update"));
 	$.ajax({
 		url: "/api/auth",
 		type: "PATCH",
