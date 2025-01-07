@@ -18,3 +18,7 @@ func root(c *gin.Context) {
 func quotes(c *gin.Context) {
 	c.HTML(http.StatusOK, "quotes.html", nil)
 }
+
+func settings(c *gin.Context) {
+	c.HTML(http.StatusOK, "settings.html", nil)
+}

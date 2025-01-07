@@ -21,6 +21,7 @@ func Serve(addr string) {
 	r.Static("/static", "./static")
 	r.GET("/", api.MiddlewareAuth, root)
 	r.GET("/quotes", api.MiddlewareAuth, middlewareAuth, quotes)
+	r.GET("/settings", api.MiddlewareAuth, middlewareAuth, settings)
 
 	r.Run(addr)
 }
