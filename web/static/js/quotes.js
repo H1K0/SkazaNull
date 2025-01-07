@@ -51,7 +51,7 @@ function escapedString(str) {
 
 function renderBlockQuote(quote) {
 	return `
-	<div class="border rounded-lg p-6 hover:shadow-md transition-shadow" quote_id="${quote.id}">
+	<div class="border rounded-lg p-6 hover:shadow-md transition-shadow">
 		<div class="flex justify-between items-start">
 			<div>
 				<p class="text-lg font-[Playfair_Display] mb-2">${escapedString(quote.text)}</p>
@@ -62,7 +62,7 @@ function renderBlockQuote(quote) {
 				<button class="text-gray-600 hover:text-custom">
 					<i class="fas fa-edit"></i>
 				</button>
-				<button class="text-gray-600 hover:text-red-500">
+				<button class="text-gray-600 hover:text-red-500" onclick="quoteDelete('${quote.id}');">
 					<i class="fas fa-trash"></i>
 				</button>
 			</div>
@@ -138,6 +138,21 @@ function reload() {
 	$("#pages-next").addClass("hidden");
 	$("#btn-page-last").addClass("hidden");
 	load();
+}
+
+function quoteDelete(quote_id) {
+	$.ajax({
+		url: `/api/quotes/${quote_id}`,
+		type: "DELETE",
+		success: function (resp) {
+			reload();
+			$("#error").addClass("hidden");
+		},
+		error: function (err) {
+			$("#error-message").text(err.responseJSON.error);
+			$("#error").removeClass("hidden");
+		},
+	});
 }
 
 $(document).on("click", "#btn-add-open", function (e) {
