@@ -95,6 +95,10 @@ function load() {
 		type: "GET",
 		dataType: "json",
 		success: function (resp) {
+			if (resp.length == 0) {
+				container.html("<p style='text-align: center;'><i>Чёт нету ничего...</i></p>");
+				return;
+			}
 			resp.forEach((quote) => {
 				container.append(renderBlockQuote(quote));
 			});
@@ -130,6 +134,10 @@ $(window).on("load", function (e) {
 
 $(document).on("click", "#btn-refresh", function (e) {
 	search = $("#input-search").val();
+	if (search != "") {
+		currPage = 1;
+		sessionStorage.setItem("search", currPage);
+	}
 	sorting = $("#input-sorting option:selected").val();
 	reload();
 	sessionStorage.setItem("search", search);

@@ -121,6 +121,7 @@ func QuotesGet(ctx context.Context, user_id string, filter string, sort string, 
 		err = fmt.Errorf("error while getting quotes: %w", err)
 		return
 	}
+	quotes = []models.Quote{}
 	for rows.Next() {
 		var quote models.Quote
 		err = rows.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
