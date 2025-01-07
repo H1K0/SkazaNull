@@ -73,7 +73,7 @@ func UserUpdatePassword(ctx context.Context, user_id string, new_password string
 //#region Quotes
 
 func QuotesGet(ctx context.Context, user_id string, filter string, sort string, limit int, offset int) (quotes []models.Quote, err error) {
-	query := "SELECT * FROM quotes_get($1) WHERE position($2 in text)>0 OR position($2 in author)>0"
+	query := "SELECT * FROM quotes_get($1) WHERE position($2 in lower(text))>0 OR position($2 in lower(author))>0"
 	if sort == "random" {
 		query += " ORDER BY random()"
 	} else if sort != "" {
@@ -116,7 +116,7 @@ func QuotesGet(ctx context.Context, user_id string, filter string, sort string, 
 	if offset > 0 {
 		query += fmt.Sprintf(" OFFSET %d", offset)
 	}
-	rows, err := ConnPool.Query(ctx, query, user_id, filter)
+	rows, err := ConnPool.Query(ctx, query, user_id, strings.ToLower(filter))
 	if err != nil {
 		err = fmt.Errorf("error while getting quotes: %w", err)
 		return
