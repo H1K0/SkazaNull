@@ -12,6 +12,7 @@ var sorting = sessionStorage.getItem("sort");
 if (sorting == null) {
 	sorting = "-datetime";
 }
+var temp_quote_id;
 
 function renderBlockQuote(quote) {
 	return `
@@ -23,7 +24,7 @@ function renderBlockQuote(quote) {
 				<p class="text-xs text-gray-400 mt-2">${quote.datetime}</p>
 			</div>
 			<div class="flex gap-2">
-				<button class="text-gray-600 hover:text-custom">
+				<button class="text-gray-600 hover:text-custom" onclick="quoteEdit('${quote.id}');">
 					<i class="fas fa-edit"></i>
 				</button>
 				<button class="text-gray-600 hover:text-red-500" onclick="quoteDelete('${quote.id}');">
@@ -104,6 +105,27 @@ function reload() {
 	load();
 }
 
+function quoteEdit(quote_id) {
+	$.ajax({
+		url: `/api/quotes/${quote_id}`,
+		type: "GET",
+		dataType: "json",
+		success: function (resp) {
+			temp_quote_id = quote_id;
+			$("#edit-quote-text").val(resp.text);
+			$("#edit-quote-author").val(resp.author);
+			$("#edit-quote-datetime").val(resp.datetime.slice(0,19));
+			$("body").css("overflow", "hidden");
+			$("#quote-editor").css("top", $(window).scrollTop());
+			$("#quote-editor").removeClass("hidden");
+		},
+		error: function (err) {
+			$("#quote-editor-error-message").text(err.responseJSON.error);
+			$("#quote-editor-error").removeClass("hidden");
+		},
+	});
+}
+
 function quoteDelete(quote_id) {
 	$.ajax({
 		url: `/api/quotes/${quote_id}`,
@@ -156,6 +178,38 @@ $(document).on("submit", "#quote-create", function (e) {
 			$("#quote-creator-error").removeClass("hidden");
 		},
 	});
+});
+
+$(document).on("submit", "#quote-update", function (e) {
+	e.preventDefault();
+	data = formToJSON($("#quote-update"));
+	data.datetime = datetimeToLocalISO(data.datetime);
+	$.ajax({
+		url: `/api/quotes/${temp_quote_id}`,
+		type: "PATCH",
+		contentType: "application/json",
+		data: JSON.stringify(data),
+		processData: false,
+		dataType: "json",
+		success: function (resp) {
+			$("#quote-editor").addClass("hidden");
+			$("body").css("overflow", "");
+			reload();
+			$("#new-quote-text").val("");
+			$("#new-quote-author").val("");
+		},
+		error: function (err) {
+			$("#quote-editor-error-message").text(err.responseJSON.error);
+			$("#quote-editor-error").removeClass("hidden");
+		},
+	});
+});
+
+$(document).on("click", "#btn-edit-close", function (e) {
+	$("body").css("overflow", "");
+	$("#quote-editor").addClass("hidden");
+	$("#quote-editor textarea,input").val("");
+	$("#quote-editor-error").addClass("hidden");
 });
 
 $(window).on("load", function (e) {
