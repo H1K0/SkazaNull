@@ -16,8 +16,8 @@
 		<div id="error" class="hidden mt-4 p-4 rounded-md bg-red-50 border border-red-200">
 			<p id="error-message" class="text-sm text-red-600 font-[&#39;Inter&#39;]"></p>
 		</div>
-		<div class="mb-6 flex justify-between items-center">
-			<div class="flex gap-4">
+		<div class="mb-6 flex justify-between items-center flex-wrap gap-4">
+			<div class="flex flex-wrap gap-4">
 				<input type="text" id="input-search" placeholder="Поиск цитат..." class="px-4 py-2 border rounded-lg" />
 				<select id="input-sorting" class="px-4 py-2 border rounded-lg" style="padding-right: 3.5rem;">
 					<option value="-datetime">По дате ↑</option>
@@ -36,9 +36,11 @@
 			</div>
 			<button class="bg-custom text-white px-4 py-2 rounded-lg hover:bg-custom/90" id="btn-add-open">Добавить цитату</button>
 		</div>
+		<hr>
 		<div id="block-quotes" class="space-y-4">
 			<img id="block-quotes-loader" src="/static/images/loader.gif" alt="Loading..." class="loader">
 		</div>
+		<hr>
 		<div class="mt-6 flex justify-center gap-2">
 			<button id="btn-page-first" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">1</button>
 			<div id="pages-prev" class="hidden px-3 py-1 border rounded-lg hover:bg-gray-50">...</div>
