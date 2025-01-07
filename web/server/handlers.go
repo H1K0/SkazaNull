@@ -7,8 +7,8 @@ import (
 )
 
 func root(c *gin.Context) {
-	authorized := c.GetBool("authorized")
-	if authorized {
+	user_id := c.GetString("user_id")
+	if user_id != "" {
 		c.Redirect(http.StatusSeeOther, "/quotes")
 	} else {
 		c.HTML(http.StatusOK, "auth.html", nil)
@@ -16,10 +16,5 @@ func root(c *gin.Context) {
 }
 
 func quotes(c *gin.Context) {
-	authorized := c.GetBool("authorized")
-	if authorized {
-		c.HTML(http.StatusOK, "quotes.html", nil)
-	} else {
-		c.Redirect(http.StatusSeeOther, "/")
-	}
+	c.HTML(http.StatusOK, "quotes.html", nil)
 }

@@ -32,7 +32,6 @@ func MiddlewareAuth(c *gin.Context) {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Ты это, залогинься сначала что ли, а то чё как крыса"})
 		return
 	}
-	c.Set("authorized", ok)
 	c.Set("user_id", user_id)
 	c.Next()
 }
