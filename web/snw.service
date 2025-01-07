@@ -1,0 +1,11 @@
+[Unit]
+Description=SkazaNull Web
+After=postgresql.service
+
+[Service]
+ExecStart=/opt/skazanull/bin/skazanull
+User=www-data
+TimeoutStopSec=10
+
+[Install]
+WantedBy=multi-user.target
