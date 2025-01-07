@@ -7,10 +7,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func Serve(addr string) {
+func Serve(addr string, encryptionKey []byte) {
 	r := gin.Default()
 
-	store := cookie.NewStore([]byte("secret"))
+	store := cookie.NewStore(encryptionKey)
 	store.Options(sessions.Options{Path: "/"})
 	r.Use(sessions.Sessions("session", store))
 
@@ -22,6 +22,7 @@ func Serve(addr string) {
 	r.Static("/skazanull.webmanifest", "./static/service/skazanull.webmanifest")
 	r.Static("/browserconfig.xml", "./static/service/browserconfig.xml")
 	r.Static("/static", "./static")
+
 	r.GET("/", api.MiddlewareAuth, root)
 	r.GET("/quotes", api.MiddlewareAuth, middlewareAuth, quotes)
 	r.GET("/settings", api.MiddlewareAuth, middlewareAuth, settings)
