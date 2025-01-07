@@ -123,11 +123,14 @@ $(document).on("click", "#btn-add-open", function (e) {
 	now = new Date;
 	now = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
 	$("#new-quote-datetime").val(now.toJSON().slice(0,19));
+	$("body").css("overflow", "hidden");
+	$("#quote-creator").css("top", $(window).scrollTop());
 	$("#quote-creator").removeClass("hidden");
 });
 
 $(document).on("click", "#btn-add-close", function (e) {
 	$("#quote-creator").addClass("hidden");
+	$("body").css("overflow", "");
 });
 
 $(document).on("submit", "#quote-create", function (e) {
@@ -143,6 +146,7 @@ $(document).on("submit", "#quote-create", function (e) {
 		dataType: "json",
 		success: function (resp) {
 			$("#quote-creator").addClass("hidden");
+			$("body").css("overflow", "");
 			reload();
 			$("#new-quote-text").val("");
 			$("#new-quote-author").val("");
