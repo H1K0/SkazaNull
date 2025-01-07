@@ -72,13 +72,13 @@ func UserUpdatePassword(ctx context.Context, user_id string, new_password string
 
 //#region Quotes
 
-func QuotesGet(ctx context.Context, user_id string, filter string, sort string, limit int, offset int) (quotes []models.Quote, err error) {
-	query := "SELECT * FROM quotes_get($1) WHERE position($2 in lower(text))>0 OR position($2 in lower(author))>0"
+func QuotesGet(ctx context.Context, user_id string, filter string, sort string, limit int, offset int) (quotes models.Quotes, err error) {
+	queryGet := "SELECT * FROM quotes_get($1) WHERE position($2 in lower(text))>0 OR position($2 in lower(author))>0"
 	if sort == "random" {
-		query += " ORDER BY random()"
+		queryGet += " ORDER BY random()"
 	} else if sort != "" {
 		sort_options := strings.Split(sort, ",")
-		query += " ORDER BY "
+		queryGet += " ORDER BY "
 		for i, sort_option := range sort_options {
 			sort_order := sort_option[:1]
 			sort_field := sort_option[1:]
@@ -105,23 +105,26 @@ func QuotesGet(ctx context.Context, user_id string, filter string, sort string, 
 				return
 			}
 			if i > 0 {
-				query += ", "
+				queryGet += ", "
 			}
-			query += fmt.Sprintf("%s %s", sort_field, sort_order)
+			queryGet += fmt.Sprintf("%s %s", sort_field, sort_order)
 		}
 	}
+	queryCount := queryGet
 	if limit >= 0 {
-		query += fmt.Sprintf(" LIMIT %d", limit)
+		queryGet += fmt.Sprintf(" LIMIT %d", limit)
 	}
 	if offset > 0 {
-		query += fmt.Sprintf(" OFFSET %d", offset)
+		queryGet += fmt.Sprintf(" OFFSET %d", offset)
 	}
-	rows, err := ConnPool.Query(ctx, query, user_id, strings.ToLower(filter))
+	filter = strings.ToLower(filter)
+	rows, err := ConnPool.Query(ctx, queryGet, user_id, filter)
 	if err != nil {
 		err = fmt.Errorf("error while getting quotes: %w", err)
 		return
 	}
-	quotes = []models.Quote{}
+	quotes.Quotes = []models.Quote{}
+	count := 0
 	for rows.Next() {
 		var quote models.Quote
 		err = rows.Scan(&quote.ID, &quote.Text, &quote.Author, &quote.Datetime, &quote.Creator.ID, &quote.Creator.Name, &quote.Creator.Login, &quote.Creator.Role, &quote.Creator.TelegramID)
@@ -129,15 +132,19 @@ func QuotesGet(ctx context.Context, user_id string, filter string, sort string, 
 			err = fmt.Errorf("error while fetching quotes: %w", err)
 			return
 		}
-		quotes = append(quotes, quote)
+		quotes.Quotes = append(quotes.Quotes, quote)
+		count++
 	}
 	err = rows.Err()
-	return
-}
-
-func QuotesCount(ctx context.Context, user_id string) (count int, err error) {
-	row := ConnPool.QueryRow(ctx, "SELECT count(*) FROM quotes_get($1)", user_id)
-	err = row.Scan(&count)
+	if err != nil {
+		return
+	}
+	quotes.Pagination.Limit = limit
+	quotes.Pagination.Offset = offset
+	quotes.Pagination.Count = count
+	queryCount = fmt.Sprintf("SELECT count(*) FROM (%s) q", queryCount)
+	row := ConnPool.QueryRow(ctx, queryCount, user_id, filter)
+	err = row.Scan(&quotes.Pagination.TotalCount)
 	return
 }
 

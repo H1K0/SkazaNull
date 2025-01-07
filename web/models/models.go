@@ -27,3 +27,15 @@ type Quote struct {
 	Datetime time.Time `json:"datetime"`
 	Creator  User      `json:"creator"`
 }
+
+type Pagination struct {
+	TotalCount int `json:"totalCount"`
+	Offset     int `json:"offset"`
+	Limit      int `json:"limit"`
+	Count      int `json:"count"`
+}
+
+type Quotes struct {
+	Pagination Pagination `json:"pagination"`
+	Quotes     []Quote    `json:"quotes"`
+}

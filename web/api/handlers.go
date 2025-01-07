@@ -162,17 +162,6 @@ func quotesGet(c *gin.Context) {
 	c.JSON(http.StatusOK, quotes)
 }
 
-func quotesCount(c *gin.Context) {
-	user_id := c.GetString("user_id")
-	count, err := db.QuotesCount(context.Background(), user_id)
-	if err != nil {
-		status, message := handleDBError(err)
-		c.JSON(status, gin.H{"error": message})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{"count": count})
-}
-
 func quoteGet(c *gin.Context) {
 	user_id := c.GetString("user_id")
 	quote_id := c.Param("id")

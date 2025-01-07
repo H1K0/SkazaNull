@@ -45,28 +45,33 @@ function renderBlockQuote(quote) {
 
 function load() {
 	var quotesCount;
-	failed = false;
+	$("#input-search").val(search);
+	$("#input-sorting").val(sorting);
+	container = $("#block-quotes");
 	$.ajax({
 		async: false,
-		url: "/api/quotes/count",
+		url: `/api/quotes?filter=${encodeURIComponent(search)}&sort=${encodeURIComponent(sorting)}&limit=${PAGE_SIZE}&offset=${(currPage - 1)*PAGE_SIZE}`,
 		type: "GET",
 		dataType: "json",
 		success: function (resp) {
-			quotesCount = resp.count;
+			quotesCount = resp.pagination.totalCount
+			if (resp.pagination.count == 0) {
+				container.html("<p style='text-align: center;'><i>Чёт нету ничего...</i></p>");
+				return;
+			}
+			resp.quotes.forEach((quote) => {
+				container.append(renderBlockQuote(quote));
+			});
 		},
 		error: function (err) {
 			$("#error-message").text(err.responseJSON.error);
 			$("#error").removeClass("hidden");
-			failed = true;
+		},
+		complete: function () {
 			$("#block-quotes-loader").addClass("hidden");
 		},
 	});
-	if (failed) {
-		return;
-	}
 	totalPages = Math.ceil(quotesCount / PAGE_SIZE);
-	$("#input-search").val(search);
-	$("#input-sorting").val(sorting);
 	$("#btn-page-curr").text(currPage);
 	if (currPage > 1) {
 		$("#btn-page-first").removeClass("hidden");
@@ -89,28 +94,6 @@ function load() {
 			}
 		}
 	}
-	container = $("#block-quotes");
-	$.ajax({
-		url: `/api/quotes?filter=${encodeURIComponent(search)}&sort=${encodeURIComponent(sorting)}&limit=${PAGE_SIZE}&offset=${(currPage - 1)*PAGE_SIZE}`,
-		type: "GET",
-		dataType: "json",
-		success: function (resp) {
-			if (resp.length == 0) {
-				container.html("<p style='text-align: center;'><i>Чёт нету ничего...</i></p>");
-				return;
-			}
-			resp.forEach((quote) => {
-				container.append(renderBlockQuote(quote));
-			});
-		},
-		error: function (err) {
-			$("#error-message").text(err.responseJSON.error);
-			$("#error").removeClass("hidden");
-		},
-		complete: function () {
-			$("#block-quotes-loader").addClass("hidden");
-		},
-	});
 }
 
 function reload() {
@@ -122,6 +105,7 @@ function reload() {
 	$("#btn-page-first").addClass("hidden");
 	$("#pages-prev").addClass("hidden");
 	$("#btn-page-prev").addClass("hidden");
+	$("#btn-page-curr").text(1);
 	$("#btn-page-next").addClass("hidden");
 	$("#pages-next").addClass("hidden");
 	$("#btn-page-last").addClass("hidden");
