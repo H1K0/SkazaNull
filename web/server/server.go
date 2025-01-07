@@ -14,6 +14,7 @@ import (
 )
 
 func Serve(addr string, encryptionKey []byte) {
+	gin.SetMode(gin.ReleaseMode)
 	r := gin.Default()
 
 	store := cookie.NewStore(encryptionKey)
