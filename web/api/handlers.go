@@ -110,7 +110,7 @@ func userLogout(c *gin.Context) {
 		return
 	}
 	session.Clear()
-	session.Options(sessions.Options{MaxAge: -1})
+	session.Options(sessions.Options{Path: "/", MaxAge: -1})
 	session.Save()
 	c.Status(http.StatusNoContent)
 }
