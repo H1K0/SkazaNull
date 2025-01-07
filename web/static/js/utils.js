@@ -1,5 +1,5 @@
 function datetimeToLocalISO(datetime) {
-	var options = {
+	options = {
 		year: "numeric",
 		month: "2-digit",
 		day: "2-digit",
@@ -8,20 +8,20 @@ function datetimeToLocalISO(datetime) {
 		second: "2-digit",
 		timeZoneName: "longOffset",
 	};
-	var formatter = new Intl.DateTimeFormat("sv-SE", options);
-	var date = new Date(datetime);
-	return formatter
+	formatter = new Intl.DateTimeFormat("iso", options);
+	date = new Date(datetime);
+	parts = {}
+	formatter
 		.formatToParts(date)
 		.map(({ type, value }) => {
 			if (type === "timeZoneName") {
-				return value.slice(3);
-			} else {
-				return value;
+				value = value.slice(3);
 			}
-		})
-		.join("")
-		.replace(" ", "T")
-		.replace(" ", "");
+			if (type !== "literal") {
+				parts[type] = value;
+			}
+		});
+	return `${parts.year}-${parts.month}-${parts.day}T${parts.hour}:${parts.minute}:${parts.second}${parts.timeZoneName}`;
 }
 
 function escapedString(str) {
