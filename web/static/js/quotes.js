@@ -21,7 +21,6 @@ function renderBlockQuote(quote) {
 			<div>
 				<p class="text-lg font-[Playfair_Display] mb-2">${escapedString(quote.text)}</p>
 				<p class="text-sm text-gray-800">${escapedString(quote.author)}</p>
-				<p class="text-xs text-gray-400 mt-2">${quote.datetime}</p>
 			</div>
 			<div class="flex gap-2">
 				<button class="text-gray-600 hover:text-custom" onclick="quoteEdit('${quote.id}');">
@@ -31,6 +30,10 @@ function renderBlockQuote(quote) {
 					<i class="fas fa-trash"></i>
 				</button>
 			</div>
+		</div>
+		<div class="w-full flex justify-between items-center flex-wrap gap-1 mt-2">
+			<p class="text-xs text-gray-400">${new Date(quote.datetime).toLocaleString()}</p>
+			<p class="text-xs text-gray-400">Добавил ${quote.creator.name}</p>
 		</div>
 	</div>
 	`;
