@@ -1,0 +1,10 @@
+# Database configuration string
+db_config: postgres://user:password@host:port/db?application_name=SkazaNull%20Web
+
+# The interface on which to run the webserver
+interface: ":9672"
+
+# Encryption key for sessions.
+# Change it to a string of exactly 16, 32 or 64 chars
+# Avoid the "#" character in your APP_KEY, it may break things.
+encryption_key: some_secret_key
