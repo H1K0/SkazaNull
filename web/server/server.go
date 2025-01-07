@@ -18,6 +18,9 @@ func Serve(addr string) {
 
 	r.LoadHTMLGlob("templates/*.html")
 
+	r.Static("/favicon.ico", "./static/service/favicon.ico")
+	r.Static("/skazanull.webmanifest", "./static/service/skazanull.webmanifest")
+	r.Static("/browserconfig.xml", "./static/service/browserconfig.xml")
 	r.Static("/static", "./static")
 	r.GET("/", api.MiddlewareAuth, root)
 	r.GET("/quotes", api.MiddlewareAuth, middlewareAuth, quotes)
