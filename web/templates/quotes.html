@@ -59,6 +59,49 @@
 			</p>
 		</div>
 	</div>
+	<div id="quote-creator" class="hidden quote-form flex flex-col items-center justify-center">
+		<div class="max-w-4xl w-full mt-8 p-6">
+			<div class="max-w-4xl w-full space-y-8 bg-white p-10 rounded-lg shadow-lg">
+				<h3 class="text-xl font-bold font-[&#39;Playfair_Display&#39;] text-gray-900 mb-4">Создать цитату</h3>
+				<div id="quote-creator-error" class="hidden mt-4 p-4 rounded-md bg-red-50 border border-red-200">
+					<p id="quote-creator-error-message" class="text-sm text-red-600 font-[&#39;Inter&#39;]"></p>
+				</div>
+				<form id="quote-create" class="space-y-4">
+					<div>
+						<label for="new-quote-text" class="block text-sm font-medium text-gray-700 font-[&#39;Inter&#39;]">
+							Цитата
+						</label>
+						<textarea id="new-quote-text" name="text" rows="3" placeholder="Сказанная цитата может быть сказана тем, кто её сказанул." required
+								  class="!rounded-button mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom focus:border-custom sm:text-sm font-[&#39;Inter&#39;]"></textarea>
+					</div>
+					<div>
+						<label for="new-quote-author" class="block text-sm font-medium text-gray-700 font-[&#39;Inter&#39;]">
+							Автор
+						</label>
+						<input type="text" id="new-quote-author" name="author" placeholder="Узбекс" required
+							   class="!rounded-button mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom focus:border-custom sm:text-sm font-[&#39;Inter&#39;]" />
+					</div>
+					<div>
+						<label for="new-quote-datetime" class="block text-sm font-medium text-gray-700 font-[&#39;Inter&#39;]">
+							Дата и время
+						</label>
+						<input type="datetime-local" id="new-quote-datetime" name="datetime" step="1"
+							   class="!rounded-button mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm placeholder-gray-400 focus:outline-none focus:ring-custom focus:border-custom sm:text-sm font-[&#39;Inter&#39;]" />
+					</div>
+					<div class="flex justify-end space-x-3">
+						<button type="button" id="btn-add-close"
+								class="!rounded-button px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom font-[&#39;Inter&#39;]">
+							Отмена
+						</button>
+						<button type="submit"
+								class="!rounded-button px-4 py-2 text-sm font-medium text-white bg-custom hover:bg-custom/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-custom font-[&#39;Inter&#39;]">
+							Создать
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 	<script src="/static/js/quotes.js"></script>
 </body>
 

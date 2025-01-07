@@ -13,6 +13,34 @@ if (sorting == null) {
 	sorting = "-datetime";
 }
 
+function datetimeToLocalISO(datetime) {
+	var options = {
+		year: "numeric",
+		month: "2-digit",
+		day: "2-digit",
+		hour: "2-digit",
+		minute: "2-digit",
+		second: "2-digit",
+		timeZoneName: "longOffset",
+	};
+
+	var formatter = new Intl.DateTimeFormat("sv-SE", options);
+	var date = new Date(datetime);
+
+	return formatter
+		.formatToParts(date)
+		.map(({ type, value }) => {
+			if (type === "timeZoneName") {
+				return value.slice(3);
+			} else {
+				return value;
+			}
+		})
+		.join("")
+		.replace(" ", "T")
+		.replace(" ", "");
+}
+
 function escapedString(str) {
 	return str
 		.replace("&", "&amp;")
@@ -111,6 +139,45 @@ function reload() {
 	$("#btn-page-last").addClass("hidden");
 	load();
 }
+
+$(document).on("click", "#btn-add-open", function (e) {
+	now = new Date;
+	now = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
+	$("#new-quote-datetime").val(now.toJSON().slice(0,19));
+	$("#quote-creator").removeClass("hidden");
+});
+
+$(document).on("click", "#btn-add-close", function (e) {
+	$("#quote-creator").addClass("hidden");
+});
+
+$(document).on("submit", "#quote-create", function (e) {
+	e.preventDefault();
+	formdata = $("#quote-create").serializeArray();
+	data = {};
+	$(formdata).each(function (index, obj) {
+		data[obj.name] = obj.value;
+	});
+	data.datetime = datetimeToLocalISO(data.datetime);
+	$.ajax({
+		url: "/api/quotes",
+		type: "POST",
+		contentType: "application/json",
+		data: JSON.stringify(data),
+		processData: false,
+		dataType: "json",
+		success: function (resp) {
+			$("#quote-creator").addClass("hidden");
+			reload();
+			$("#new-quote-text").val("");
+			$("#new-quote-author").val("");
+		},
+		error: function (err) {
+			$("#quote-creator-error-message").text(err.responseJSON.error);
+			$("#quote-creator-error").removeClass("hidden");
+		},
+	});
+});
 
 $(window).on("load", function (e) {
 	load();
