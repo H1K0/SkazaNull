@@ -26,10 +26,10 @@ function datetimeToLocalISO(datetime) {
 
 function escapedString(str) {
 	return str
-		.replace("&", "&amp;")
-		.replace("<", "&lt;")
-		.replace(">", "&gt;")
-		.replace("\n", "<br>");
+		.replaceAll("&", "&amp;")
+		.replaceAll("<", "&lt;")
+		.replaceAll(">", "&gt;")
+		.replaceAll("\n", "<br>");
 }
 
 function formToJSON(form) {
