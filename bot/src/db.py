@@ -53,8 +53,9 @@ class Database:
 		quote = msg.text.strip().split("\n\n")
 		text = quote[0].strip()
 		author = "" if len(quote) == 1 else quote[1].strip()
+		timestamp = msg.forward_origin.date if msg.forward_origin else msg.date
 		with self.conn.cursor() as cursor:
-			cursor.execute("INSERT INTO quotes(text, author, creator_id) VALUES(%s, NULLIF(%s, ''), (SELECT id FROM users WHERE telegram_id=%s)) RETURNING id", (quote[0].strip(), author, msg.from_user.id))
+			cursor.execute("INSERT INTO quotes(text, author, creator_id, datetime) VALUES(%s, NULLIF(%s, ''), (SELECT id FROM users WHERE telegram_id=%s), to_timestamp(%s)::timestamptz) RETURNING id", (quote[0].strip(), author, msg.from_user.id, timestamp))
 			return cursor.fetchone()[0]
 
 	def quotes_count(self):
